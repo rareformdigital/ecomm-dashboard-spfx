@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
+import logoHorizColorUrl from "@/assets/brand/logo-horiz-color.png";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 
 /** Official BigCommerce “B” mark from the press kit, tinted via currentColor. */
@@ -31,12 +32,12 @@ export const Topbar = () => {
     }, [pathname, setOpenMobile]);
 
     return (
-        <header className="bg-background/80 sticky top-0 z-50 grid h-14 grid-cols-3 items-center overflow-hidden border-b backdrop-blur-sm">
+        <header className="bg-background/80 sticky top-(--apg-sticky-top) z-30 grid h-14 grid-cols-3 items-center overflow-hidden border-b backdrop-blur-sm">
             <div className="flex items-center gap-2 px-4">
                 <SidebarTrigger />
             </div>
             <img
-                src="/brand/logo-horiz-color.png"
+                src={logoHorizColorUrl}
                 alt="Oldcastle APG"
                 className="h-7 w-auto max-h-7 justify-self-center object-contain"
             />

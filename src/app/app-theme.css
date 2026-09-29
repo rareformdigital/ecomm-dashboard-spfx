@@ -87,6 +87,11 @@
 }
 
 :root {
+  /* Vite sticky chrome uses the window. The SharePoint host overrides this. */
+  --apg-sticky-top: 0px;
+  /* Above the suite bar (about z-index 1000) and under SharePoint's own dialogs. */
+  --apg-overlay-z: 100000;
+
   /* Official palette */
   --brand-green: #00583d;
   --brand-bright: #bacc28;
@@ -230,9 +235,10 @@
 }
 
 /*
-  Stock shadcn zinc theme for PaceUI routes only.
-  Applied via the `paceui-default` class on <html> so the template is not
-  influenced by the brand tokens, fonts, or heading styles above.
+  Stock shadcn zinc tokens for PaceUI routes.
+  The class stays on <html> so menus portaled to document.body inherit
+  these variables. Background, text color, font, and link cursor are not
+  set here — that would paint the rest of a SharePoint page.
 */
 .paceui-default {
   --radius: 0.625rem;
@@ -281,28 +287,83 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
   --font-sans: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Denton", Georgia, serif;
-  font-family: var(--font-sans);
-  background-color: var(--background);
-  color: var(--foreground);
 }
 
-.paceui-default :is(a, button, summary, [role="button"], [role="tab"], [role="menuitem"], [role="option"], [role="combobox"], [data-slot="button"], [data-slot="sidebar-menu-button"], [data-slot="select-trigger"]):not(:disabled):not([aria-disabled="true"]) {
+/* AnalyticsWebPart adds this class on the web part element. */
+.apg-analytics-host {
+  --apg-sticky-top: 3rem;
+}
+
+.apg-analytics-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+#root .apg-analytics-root {
+  flex: 1 1 auto;
+  min-height: 100svh;
+}
+
+:is(
+  [data-slot="dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="select-content"],
+  [data-slot="tooltip-content"],
+  [data-slot="popover-content"]
+) {
+  font-family: var(--font-sans);
+}
+
+:is(
+  .apg-analytics-root,
+  [data-slot="dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="select-content"],
+  [data-slot="tooltip-content"],
+  [data-slot="popover-content"]
+) :is(a, button, summary, [role="button"], [role="tab"], [role="menuitem"], [role="option"], [role="combobox"], [data-slot="button"], [data-slot="sidebar-menu-button"], [data-slot="select-trigger"]):not(:disabled):not([aria-disabled="true"]) {
   cursor: pointer;
 }
 
-.paceui-default :is(a, button, [role="button"]):disabled,
-.paceui-default :is(a, button, [role="button"])[aria-disabled="true"] {
+:is(
+  .apg-analytics-root,
+  [data-slot="dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="select-content"],
+  [data-slot="popover-content"]
+) :is(a, button, [role="button"]):disabled,
+:is(
+  .apg-analytics-root,
+  [data-slot="dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="select-content"],
+  [data-slot="popover-content"]
+) :is(a, button, [role="button"])[aria-disabled="true"] {
   cursor: not-allowed;
 }
 
-.paceui-default [data-slot="card-title"],
-.paceui-default h1,
-.paceui-default h2 {
+:is(.apg-analytics-root, [data-slot="dialog-content"], [data-slot="sheet-content"]) :is([data-slot="card-title"], h1, h2) {
   font-family: var(--font-sans);
   letter-spacing: 0;
 }
 
-.paceui-default .font-stat {
+.apg-analytics-root .font-stat {
   font-family: var(--font-heading) !important;
   letter-spacing: -0.02em;
 }
@@ -359,15 +420,6 @@
   body {
     @apply bg-background text-foreground;
     margin: 0;
-  }
-  #root {
-    min-height: 100svh;
-  }
-  /* SPFx web part host — prefer this over styling SharePoint's body. */
-  .apg-analytics-root {
-    @apply bg-background text-foreground font-sans;
-    min-height: 100%;
-    box-sizing: border-box;
   }
   html {
     @apply font-sans;

@@ -5,9 +5,9 @@ import { PaceuiErrorBoundary } from "@/components/templates/ultimate-dashboard/l
 const THEME_CLASS = "paceui-default"
 
 /**
- * Applies stock shadcn zinc tokens on <html> for the PaceUI app shell.
- * Portals (dropdowns, sheets, dialogs) render on document.body, so the class
- * has to live on the document element — a wrapper div would not cover them.
+ * Applies stock shadcn zinc tokens on <html> so portals on document.body
+ * inherit colors. The class only sets variables — background, text, and
+ * link cursor stay on `.apg-analytics-root` and the portal nodes.
  */
 export function PaceuiDefaultTheme() {
   useEffect(() => {

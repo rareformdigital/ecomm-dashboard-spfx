@@ -1,3 +1,5 @@
+import castlemarkUrl from "@/assets/brand/castlemark-transparent.png"
+
 import { cn } from "@/lib/utils"
 
 type OldcastleMarkProps = {
@@ -12,7 +14,7 @@ export function OldcastleMark({
 }: OldcastleMarkProps) {
   return (
     <img
-      src="/brand/castlemark-transparent.png"
+      src={castlemarkUrl}
       alt={alt}
       className={cn("size-9 shrink-0 object-contain", className)}
     />

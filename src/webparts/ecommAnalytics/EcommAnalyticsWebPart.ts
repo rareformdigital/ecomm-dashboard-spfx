@@ -23,6 +23,9 @@ export default class EcommAnalyticsWebPart extends BaseClientSideWebPart<IEcommA
   private _root: Root | undefined;
 
   public render(): void {
+    // Sticky chrome reads --apg-sticky-top. Absent on the Vite app, so that offset stays 0.
+    this.domElement.classList.add('apg-analytics-host');
+
     const element: React.ReactElement = React.createElement(App, {
       apiBaseUrl: this.properties.apiBaseUrl ?? ''
     });
